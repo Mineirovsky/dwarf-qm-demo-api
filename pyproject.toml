@@ -1,0 +1,28 @@
+[project]
+name = "dwarf-qm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Gabriel Mineiro", email = "gabrielpfgmineiro@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "bcrypt>=5.0.0",
+    "dishka>=1.10.1",
+    "fastapi[standard]>=0.141.1",
+    "psycopg2-binary>=2.9.13",
+    "pydantic>=2.13.5",
+    "yoyo-migrations>=9.0.0",
+]
+
+[project.scripts]
+dwarf-qm = "app.main:main"
+
+[build-system]
+requires = ["uv_build>=0.12.18,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "app"
+module-root = ""
