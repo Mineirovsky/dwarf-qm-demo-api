@@ -1,25 +1,16 @@
+from psycopg2.extras import RealDictCursor
+
+from app.repositories import Repository
 from app.models import User
-import bcrypt
 
-DEFAULT_PASSWORD = bcrypt.hashpw("password".encode(), bcrypt.gensalt())
+class UsersRepository(Repository):
+    def get_all(self) -> list[User]:
+        with self.db_connection.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute("SELECT id, username, name, email, created_at, updated_at FROM users;")
+            return [User.model_validate(row) for row in cursor.fetchall()]
 
-USERS = [
-    User(
-        id=1,
-        name="John Doe",
-        password=DEFAULT_PASSWORD.decode(),
-        email="john.doe@example.com",
-        created_at="2021-01-01T00:00:00Z",
-        updated_at="2021-01-01T00:00:00Z"
-    ),
-]
-
-class UsersRepository:
-    def __init__(self):
-        pass
-
-    def get_all(self):
-        return USERS
-
-    def get_by_email(self, email: str):
-        return next((user for user in USERS if user.email == email), None)
+    def get_by_username(self, username: str) -> User | None:
+        with self.db_connection.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute("SELECT * FROM users WHERE username = %s;", (username,))
+            result = cursor.fetchone()
+            return User.model_validate(result) if result else None

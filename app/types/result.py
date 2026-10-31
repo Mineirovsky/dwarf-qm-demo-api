@@ -1,4 +1,4 @@
-from typing import Generic, TypeAlias, TypeVar
+from typing import Any, Generic, TypeAlias, TypeVar
 
 TOK = TypeVar("TOK")
 TERR = TypeVar("TERR")

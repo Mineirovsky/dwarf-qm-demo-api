@@ -8,7 +8,7 @@ router = APIRouter(route_class=DishkaRoute)
 
 @router.post("/login")
 async def login(data: Login, identity_service: FromDishka[IdentityService]):
-    result = identity_service.authenticate(data)
+    result = identity_service.authenticate(data.username, data.password)
     if result.is_ok():
         return result.value()
     else:
